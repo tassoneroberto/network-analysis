@@ -1,0 +1,14 @@
+addEdgesTest<-function(test,train,edgesToAdd){
+    vertexList<-V(test)
+    for (i in 1:edgesToAdd){
+	ok<-F
+	while(!ok){
+        	from<- as.numeric(sample(vertexList,1))
+        	to<- as.numeric(sample(vertexList,1))
+		if(!are.connected(train,from, to) && !are.connected(test,from, to))
+			ok<-T
+	}
+        test <- add.edges(test,c(from,to),attr=list(type=0))
+    }
+    return (test)
+}

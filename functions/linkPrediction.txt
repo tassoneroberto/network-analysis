@@ -1,0 +1,33 @@
+linkPrediction<-function(test,scoreMatrix,theta){
+    tp<-0
+    tn<-0
+    fp<-0
+    fn<-0
+    edgeList<-E(test)
+    for(i in 1:length(edgeList)){
+	e<-edgeList[i]	
+	from<-match(ends(test,e)[1], V(test)$name)
+	to<-match(ends(test,e)[2], V(test)$name)
+	l<-e$type
+	s<-scoreMatrix[to,from]
+	if(l==1 && s>theta){ 
+		tp<-tp+1
+		next
+	}
+	if(l==0 && s<theta){ 
+		tn<-tn+1
+		next
+	}
+	if(l==0 && s>theta){ 
+		fp<-fp+1
+		next
+	}
+	if(l==1 && s<theta){ 
+		fn<-fn+1
+		next
+	}
+    }
+    accuracy<-(tp+tn)/(tp+tn+fp+fn)
+    lp <- list("accuracy" = accuracy, "tp" = tp,"tn"=tn,"fp"=fp,"fn"=fn)
+    return (lp)
+}

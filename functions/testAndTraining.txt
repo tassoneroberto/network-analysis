@@ -1,0 +1,20 @@
+trainAndTest<-function(g){
+    test<-g-E(g)
+    train<-g-E(g)
+    for (v in V(g)){
+	allOutVertex<-adjacent_vertices(g, v, mode = c("out"))
+	total<-lengths(allOutVertex)
+	if(total<2)
+		next
+	toTrain<-floor(total*0.8)
+	for(i in 1:toTrain){
+		train <- add.edges(train,c(v,allOutVertex[[1]][i]));
+	}
+	toTrain<-toTrain+1
+	for(i in toTrain:total){
+		test <- add.edges(test,c(v,allOutVertex[[1]][i]),attr=list(type=1));
+	}
+    }
+    trainAndTest <- list("train" = train, "test" = test)
+    return (trainAndTest)
+}
